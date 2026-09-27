@@ -1,11 +1,86 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Footer from "../components/Footer.astro";
+import About from "../components/About.astro";
+import Skills from "../components/Skills.astro";
+import Experience from "../components/Experience.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const proyectos = [
+  {
+    nombre: "Lowcost",
+    enlaceImagen: "1d887d573724f70888e7247851dd8dc4.jpg",
+    descripcion: "Tienda online con carrito de compra, gestión de roles y control de stock.",
+    stack: ["Laravel", "MySQL", "Bootstrap"],
+    enlace: "https://github.com/mrcsjalca/Lowcost",
+  },
+  {
+    nombre: "IncidenceHub",
+    enlaceImagen: "1d887d573724f70888e7247851dd8dc4.jpg",
+    descripcion: "Sistema de tickets/helpdesk full-stack para gestión de incidencias.",
+    stack: ["Node.js", "Express", "..."],
+    enlace: "https://github.com/mrcsjalca/IncidenceHub",
+  },
+  {
+    nombre: "Gestión de Proveedores",
+    enlaceImagen: "1d887d573724f70888e7247851dd8dc4.jpg",
+    descripcion: "Aplicación para la gestión de proveedores construida con Symfony 7.",
+    stack: ["Symfony 7", "PHP", "..."],
+    enlace: "https://github.com/mrcsjalca/Gestion_proveedores",
+  },
+  {
+    nombre: "Dungeon Quest",
+    enlaceImagen: "1d887d573724f70888e7247851dd8dc4.jpg",
+    descripcion: "Descripción corta del proyecto",
+    stack: ["..."],
+    enlace: "https://github.com/TheIza/DungeonQuest-Proyecto-AEA2",
+  }
+];
 ---
+<Layout title="Mi Portfolio">
+  <Header />
+  <Hero />
+  <About />
+  <Skills />
 
-<Layout>
-	<Welcome />
+<section id="proyectos">
+  <div class="container">
+    <h2 data-i18n="proyectos">Proyectos</h2>
+    <div class="grid">
+      {proyectos.map((p) => (
+        <ProjectCard 
+          nombre={p.nombre} 
+          descripcion={p.descripcion} 
+          enlace={p.enlace} 
+          imagen={p.enlaceImagen}
+          stack={p.stack}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+  <Experience />
+  <Footer />
 </Layout>
+
+
+
+<style>
+  section#proyectos {
+    padding: 5rem 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 600px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

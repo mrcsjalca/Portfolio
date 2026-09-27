@@ -1,0 +1,108 @@
+---
+const skillGroups = [
+  { key: "lang", label: "Lenguajes", labelKey: "group_lang", filterKey: "filter_lang", items: ["Java (POO)", "PHP", "HTML", "XML", "JSON", "PL/SQL", "SQL"] },
+  { key: "frameworks", label: "Frameworks", labelKey: "group_frameworks", filterKey: "filter_frameworks", items: ["Laravel", "Symfony", "Velneo"] },
+  { key: "db", label: "Bases de datos", labelKey: "group_db", filterKey: "filter_db", items: ["MySQL", "MariaDB", "phpMyAdmin"] },
+  { key: "sys", label: "Sistemas y redes", labelKey: "group_sys", filterKey: "filter_sys", items: ["Windows", "Linux", "Samba", "FTP", "DHCP", "VirtualBox", "XAMPP", "Mikrotik", "Isard"] },
+  { key: "tools", label: "Herramientas", labelKey: "group_tools", filterKey: "filter_tools", items: ["Git", "GitHub", "VS Code", "Eclipse", "NetBeans", "Visual Studio 2022", "AWS"] },
+];
+---
+<section id="skills" class="skills">
+  <div class="container">
+    <h2 data-i18n="skillsTitle">Tecnologías</h2>
+
+    <div class="filter-tabs">
+      <button class="filter-btn active" data-filter="all" data-i18n="filterAll">Todas</button>
+      {skillGroups.map((g) => (
+        <button class="filter-btn" data-filter={g.key} data-i18n={g.filterKey}>{g.label}</button>
+      ))}
+    </div>
+
+    <div class="skills-cards">
+      {skillGroups.map((group) => (
+        <div class="skill-card" data-group={group.key}>
+          <p class="group-label" data-i18n={group.labelKey}>{group.label}</p>
+          <div class="skills-grid">
+            {group.items.map((s) => <span class="skill-badge">{s}</span>)}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.skill-card');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach((c) => {
+        c.style.display = (filter === 'all' || c.dataset.group === filter) ? 'block' : 'none';
+      });
+    });
+  });
+</script>
+
+<style>
+  .skills {
+    padding: 5rem 2rem;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0 2rem;
+  }
+  .filter-btn {
+    background: none;
+    border: 1px solid var(--muted);
+    border-radius: 999px;
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--text);
+  }
+  .filter-btn.active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+  .skills-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+  }
+  .skill-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 1.2rem;
+  }
+  .group-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin: 0 0 0.8rem;
+    font-weight: 600;
+  }
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .skill-badge {
+    background: var(--bg);
+    border: 1px solid var(--muted);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+  }
+</style>
