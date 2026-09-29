@@ -1,59 +1,212 @@
+---
+
+---
 <section id="experiencia" class="experience">
-  <!-- Todo lo que tenga i18n es poque tiene que ser rellanada con alguno de los idiomas en el js-->
-  <h2 data-i18n="expTitle">Experiencia</h2>
+  <div class="container reveal">
+    <h2 class="section-heading" data-i18n="expTitle">Experiencia y Formación</h2>
 
-  <div class="exp-item">
-    <h3>RUBICON SOFTWARE — Reus</h3>
-    <p class="role" data-i18n="expRubiconRole">Desarrollo de aplicaciones y soluciones empresariales</p>
-    <ul>
-      <li data-i18n="expRubicon1">Desarrollo y mantenimiento de aplicaciones utilizando Velneo</li>
-      <li data-i18n="expRubicon2">Implementación de lógica de negocio, funciones y triggers en el backend</li>
-      <li data-i18n="expRubicon3">Desarrollo y modificación de funcionalidades según las necesidades del proyecto</li>
-      <li data-i18n="expRubicon4">Trabajo con bases de datos y gestión de datos dentro del entorno de desarrollo</li>
-      <li data-i18n="expRubicon5">Resolución de incidencias y mantenimiento evolutivo de aplicaciones existentes</li>
-    </ul>
-  </div>
+    <div class="timeline">
+      <!-- Item 1: RUBICON SOFTWARE -->
+      <article class="timeline-item">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <h3 class="company-name">RUBICON SOFTWARE</h3>
+              <p class="role-title" data-i18n="expRubiconRole">Desarrollo de aplicaciones y soluciones empresariales</p>
+            </div>
+            <span class="timeline-date" data-i18n="expRubiconDate">2026/06</span>
+          </div>
+          <p class="company-location">📍 Reus, Tarragona</p>
+          <ul class="duties-list">
+            <li data-i18n="expRubicon1">Desarrollo y mantenimiento de aplicaciones de gestión utilizando Velneo</li>
+            <li data-i18n="expRubicon2">Implementación de lógica de negocio, funciones y triggers en el backend</li>
+            <li data-i18n="expRubicon3">Desarrollo y optimización de funcionalidades adaptadas a las necesidades del cliente</li>
+            <li data-i18n="expRubicon4">Gestión avanzada de bases de datos relacionales dentro del entorno de desarrollo</li>
+            <li data-i18n="expRubicon5">Resolución de incidencias y mantenimiento evolutivo en entornos de producción</li>
+          </ul>
+        </div>
+      </article>
 
-  <div class="exp-item">
-    <h3>BEEPBOX — Reus</h3>
-    <p class="role" data-i18n="expBeepboxRole">Instalación y configuración de sistemas</p>
-    <ul>
-      <li data-i18n="expBeepbox1">Instalación y configuración de sistemas operativos y software</li>
-      <li data-i18n="expBeepbox2">Mantenimiento y preparación de equipos informáticos</li>
-      <li data-i18n="expBeepbox3">Diagnóstico y resolución de incidencias de hardware y software</li>
-      <li data-i18n="expBeepbox4">Gestión de inventario y control de stock</li>
-    </ul>
-  </div>
+      <!-- Item 2: BEEPBOX -->
+      <article class="timeline-item">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <h3 class="company-name">BEEPBOX</h3>
+              <p class="role-title" data-i18n="expBeepboxRole">Técnico de soporte, sistemas y redes</p>
+            </div>
+            <span class="timeline-date" data-i18n="expBeepboxDate"> 2024/06 - 2024/10 </span>
+          </div>
+          <p class="company-location">📍 Reus, Tarragona</p>
+          <ul class="duties-list">
+            <li data-i18n="expBeepbox1">Instalación y configuración de sistemas operativos, software empresarial y periféricos</li>
+            <li data-i18n="expBeepbox2">Mantenimiento preventivo, diagnóstico y ensamblaje de equipos informáticos</li>
+            <li data-i18n="expBeepbox3">Resolución de incidencias críticas de hardware, conectividad y software</li>
+            <li data-i18n="expBeepbox4">Gestión de inventario informático, control de garantías y stock</li>
+          </ul>
+        </div>
+      </article>
 
-  <div class="exp-item">
-    <h3>INS Baix Camp — Reus</h3>
-    <p class="role" data-i18n="expDamRole">CFGS Desarrollo de Aplicaciones Multiplataforma</p>
+      <!-- Item 3: INS BAIX CAMP (Educación / DAM) -->
+      <article class="timeline-item">
+        <div class="timeline-dot timeline-dot-edu" aria-hidden="true"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <h3 class="company-name">INS Baix Camp</h3>
+              <p class="role-title" data-i18n="expDamRole">CFGS Desarrollo de Aplicaciones Multiplataforma</p>
+            </div>
+            <span class="timeline-date timeline-date-active" data-i18n="expDamDate">2024 - 2026 (En curso)</span>
+          </div>
+          <p class="company-location">📍 Reus, Tarragona</p>
+          <ul class="duties-list">
+            <li data-i18n="expDam1">Formación especializada en Java (POO), arquitectura de software, bases de datos (SQL) y desarrollo móvil/multiplataforma</li>
+          </ul>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
 <style>
   .experience {
-    padding: 4rem 2rem;
-    max-width: 700px;
-    margin: 0 auto;
+    padding: 4.5rem 0;
   }
-  .exp-item {
+
+  /* Estructura de línea de tiempo vertical */
+  .timeline {
+    position: relative;
     margin-top: 2rem;
-    padding-left: 1rem;
-    border-left: 2px solid var(--muted);
+    padding-left: 2rem;
+    border-left: 2px solid var(--border);
   }
-  .exp-item h3 {
-    margin: 0 0 0.3rem;
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.75rem;
+    transition: transform 0.2s ease;
   }
-  .role {
-    color: var(--muted);
-    font-size: 0.9rem;
-    margin: 0 0 0.6rem;
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
   }
-  .exp-item ul {
+
+  /* Punto indicador de la línea de tiempo */
+  .timeline-dot {
+    position: absolute;
+    left: -2rem;
+    top: 0.25rem;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 3px solid var(--primary);
+    box-shadow: 0 0 0 4px var(--bg);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .timeline-dot-edu {
+    border-color: #10b981; /* Verde esmeralda para formación */
+  }
+
+  .timeline-item:hover .timeline-dot {
+    transform: translateX(-50%) scale(1.3);
+    background: var(--primary);
+  }
+
+  .timeline-content {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .timeline-content:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .company-name {
     margin: 0;
-    padding-left: 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .role-title {
+    margin: 0.25rem 0 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .timeline-date {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--text-muted);
+  }
+
+  .timeline-date-active {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.35);
+    color: #16a34a;
+  }
+
+  .company-location {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+  }
+
+  .duties-list {
+    margin: 0;
+    padding-left: 1.25rem;
     font-size: 0.9rem;
-    line-height: 1.6;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+
+  .duties-list li {
+    margin-bottom: 0.4rem;
+  }
+
+  .duties-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 600px) {
+    .timeline {
+      padding-left: 1.5rem;
+    }
+    .timeline-dot {
+      left: -1.5rem;
+    }
+    .timeline-content {
+      padding: 1.15rem;
+    }
+    .timeline-header {
+      flex-direction: column;
+    }
   }
 </style>

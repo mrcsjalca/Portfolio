@@ -1,86 +1,182 @@
 ---
+
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
-import ProjectCard from "../components/ProjectCard.astro";
-import Footer from "../components/Footer.astro";
 import About from "../components/About.astro";
 import Skills from "../components/Skills.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 import Experience from "../components/Experience.astro";
+import Footer from "../components/Footer.astro";
+import Formation from "../components/Formation.astro";
 
+// Listado de proyectos reales con sus stacks técnicos verificados en GitHub
 const proyectos = [
-  {
-    nombre: "Lowcost",
-    enlaceImagen: "1d887d573724f70888e7247851dd8dc4.jpg",
-    descripcion: "Tienda online con carrito de compra, gestión de roles y control de stock.",
-    stack: ["Laravel", "MySQL", "Bootstrap"],
-    enlace: "https://github.com/mrcsjalca/Lowcost",
-  },
-  {
-    nombre: "IncidenceHub",
-    enlaceImagen: "1d887d573724f70888e7247851dd8dc4.jpg",
-    descripcion: "Sistema de tickets/helpdesk full-stack para gestión de incidencias.",
-    stack: ["Node.js", "Express", "..."],
-    enlace: "https://github.com/mrcsjalca/IncidenceHub",
-  },
   {
     nombre: "Gestión de Proveedores",
     enlaceImagen: "1d887d573724f70888e7247851dd8dc4.jpg",
-    descripcion: "Aplicación para la gestión de proveedores construida con Symfony 7.",
-    stack: ["Symfony 7", "PHP", "..."],
+    descripcion: "Aplicación empresarial para la gestión integral de proveedores y pedidos construida con Symfony 7 y arquitectura modular.",
+    i18nDescKey: "projectProveedoresDesc",
+    stack: ["Symfony 7", "PHP", "MySQL", "Twig"],
+    categorias: ["php", "web"],
     enlace: "https://github.com/mrcsjalca/Gestion_proveedores",
+  },
+  {
+    nombre: "Lowcost",
+    enlaceImagen: "1d887d573724f70888e7247851dd8dc4.jpg",
+    descripcion: "Tienda online completa con pasarela de compra, carrito dinámico, gestión de roles de usuario y control de stock.",
+    i18nDescKey: "projectLowcostDesc",
+    stack: ["Laravel", "PHP", "MySQL", "Bootstrap"],
+    categorias: ["php", "web"],
+    enlace: "https://github.com/mrcsjalca/Lowcost",
   },
   {
     nombre: "Dungeon Quest",
     enlaceImagen: "1d887d573724f70888e7247851dd8dc4.jpg",
-    descripcion: "Descripción corta del proyecto",
-    stack: ["..."],
+    descripcion: "Videojuego RPG de mazmorras con combate por turnos, sistema de inventario y arquitectura orientada a objetos (POO).",
+    i18nDescKey: "projectDungeonDesc",
+    stack: ["Java", "POO", "Git"],
+    categorias: ["java"],
     enlace: "https://github.com/TheIza/DungeonQuest-Proyecto-AEA2",
   }
 ];
+
+const categorias = ["todos", ...new Set(proyectos.flatMap((p) => p.categorias))];
+
 ---
-<Layout title="Mi Portfolio">
+<Layout 
+  title="Marcos Jalca | Desarrollador Multiplataforma (DAM) & Full-Stack"
+  description="Portfolio profesional de Marcos Jalca. Desarrollador especializado en Backend (Java, PHP, Symfony, Laravel), Frontend y entornos multiplataforma. Disponible para formación dual."
+>
   <Header />
-  <Hero />
-  <About />
-  <Skills />
+  
+  <main id="main-content">
+    <Hero />
+    <About />
+    <Skills />
 
-<section id="proyectos">
-  <div class="container">
-    <h2 data-i18n="proyectos">Proyectos</h2>
-    <div class="grid">
-      {proyectos.map((p) => (
-        <ProjectCard 
-          nombre={p.nombre} 
-          descripcion={p.descripcion} 
-          enlace={p.enlace} 
-          imagen={p.enlaceImagen}
-          stack={p.stack}
-        />
-      ))}
-    </div>
-  </div>
-</section>
+    <!-- Sección de Proyectos Destacados -->
+    <section id="proyectos" class="projects">
+      <div class="container reveal">
+          <h2 class="section-heading" data-i18n="projectsTitle">Proyectos Destacados</h2>
+          <div class="filters" role="group" aria-label="Filtrar proyectos">
+            {categorias.map((c) => (
+              <button
+                type="button"
+                class={`filter-btn ${c === "todos" ? "active" : ""}`}
+                data-filter={c}
+                aria-pressed={c === "todos"}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
 
-  <Experience />
+          <div class="projects-grid">
+            {proyectos.map((p) => (
+              <div class="project-item" data-categorias={p.categorias.join(" ")}>
+                <ProjectCard
+                  nombre={p.nombre}
+                  descripcion={p.descripcion}
+                  i18nDescKey={p.i18nDescKey}
+                  enlace={p.enlace}
+                  imagen={p.enlaceImagen}
+                  stack={p.stack}
+                />
+              </div>
+            ))}
+          </div>
+      </div>
+    </section>
+
+    <Experience />
+    <Formation />
+
+  </main>
+
   <Footer />
 </Layout>
 
+  <script>
+    const botones = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+    const items = document.querySelectorAll<HTMLElement>(".project-item");
 
+    function aplicarFiltro(filtro: string) {
+      botones.forEach((b) => {
+        const activo = b.dataset.filter === filtro;
+        b.classList.toggle("active", activo);
+        b.setAttribute("aria-pressed", String(activo));
+      });
+
+      items.forEach((item) => {
+        const cats = item.dataset.categorias?.split(" ") ?? [];
+        item.hidden = !(filtro === "todos" || cats.includes(filtro));
+      });
+    }
+
+    botones.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        aplicarFiltro(btn.dataset.filter ?? "todos");
+      });
+    });
+
+    // Estado inicial: "todos" seleccionado
+    aplicarFiltro("todos");
+  </script>
 
 <style>
-  section#proyectos {
-    padding: 5rem 0;
+  .projects {
+    padding: 4.5rem 0;
   }
-  .grid {
+
+  .projects-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
   }
-  @media (max-width: 600px) {
-    .grid {
+
+  @media (max-width: 680px) {
+    .projects-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+    .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .filter-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.45rem 1.15rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+
+  .filter-btn:hover {
+    color: var(--text);
+    border-color: var(--text-muted);
+    transform: translateY(-1px);
+  }
+
+  .filter-btn.active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .project-item {
+    height: 100%;
   }
 </style>

@@ -1,64 +1,234 @@
 ---
-const { nombre, descripcion, enlace, imagen, stack } = Astro.props;
+
+interface Props {
+  nombre: string;
+  descripcion: string;
+  enlace: string;
+  imagen?: string;
+  stack: string[];
+  i18nDescKey?: string;
+}
+
+const { nombre, descripcion, enlace, imagen, stack, i18nDescKey } = Astro.props;
 ---
-<a href={enlace} target="_blank" class="card">
-  <img src={`/images/${imagen}`} alt={nombre} />
-  <div class="card-body">
-    <h3>{nombre}</h3>
-    <p>{descripcion}</p>
-    <div class="tags">
-      {stack?.map((tech) => <span class="tag">{tech}</span>)}
+<!--
+  REGLA DE SEGURIDAD CRÍTICA (target="_blank" y rel="noopener noreferrer"):
+  Al abrir enlaces en una nueva pestaña (target="_blank"), el navegador da acceso
+  a la nueva página a la propiedad 'window.opener' de nuestro sitio. Una página
+  maliciosa podría redirigir la pestaña original a un sitio de phishing.
+  - 'noopener': Anula la referencia a 'window.opener'.
+  - 'noreferrer': Impide que la cabecera HTTP Referer revele de dónde proviene el usuario.
+-->
+<article class="project-card-wrapper">
+  <a 
+    href={enlace} 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    class="card"
+    aria-label={`Ver proyecto ${nombre} en GitHub (se abre en una nueva pestaña)`}
+  >
+    <!-- Cabecera visual del proyecto -->
+    <div class="card-visual">
+      {imagen ? (
+        <img 
+          src={`/images/${imagen}`} 
+          alt={`Captura del proyecto ${nombre}`} 
+          loading="lazy"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+      ) : null}
+      
+      <!-- Fondo decorativo / fallback estilizado con degradado -->
+      <div class="visual-fallback" style={imagen ? "display: none;" : "display: flex;"}>
+        <span class="fallback-icon">📁</span>
+        <span class="fallback-name">{nombre}</span>
+      </div>
+
+      <div class="card-badge">
+        <span>GitHub ↗</span>
+      </div>
     </div>
-  </div>
-</a>
+
+    <!-- Cuerpo de la tarjeta -->
+    <div class="card-body">
+      <div class="card-header">
+        <h3 class="project-title">{nombre}</h3>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon" aria-hidden="true">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </div>
+
+      <p class="project-description" data-i18n={i18nDescKey}>{descripcion}</p>
+
+      <!-- Etiquetas de tecnologías empleadas en el proyecto -->
+      
+      <div class="tags" aria-label="Tecnologías utilizadas">
+
+        
+
+        {stack?.map((tech) => (
+          <span class="tag">{tech}</span>
+        ))}
+      </div>
+    </div>
+  </a>
+</article>
 
 <style>
+  .project-card-wrapper {
+    height: 100%;
+  }
+
   .card {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     background: var(--card-bg);
-    border-radius: 14px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: transform .2s ease, box-shadow .2s ease;
+    box-shadow: var(--card-shadow);
+    /* Transición suave para la animación de elevación al interactuar */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.2s ease;
   }
+
+  /* Elevación y resplandor al pasar el ratón */
   .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-6px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: var(--primary);
   }
-  .card img {
+
+  .card-visual {
+    position: relative;
     width: 100%;
-    height: 120px;
+    height: 140px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .card-visual img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center;
     display: block;
-    background: var(--bg);
+    transition: transform 0.4s ease;
   }
+
+  .card:hover .card-visual img {
+    transform: scale(1.05);
+  }
+
+  .visual-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg) 100%);
+  }
+
+  .fallback-icon {
+    font-size: 2rem;
+  }
+
+  .fallback-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .card:hover .card-badge {
+    background: var(--primary);
+  }
+
   .card-body {
-    padding: 0.9rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
   }
-  .card-body h3 {
-    margin: 0 0 0.4rem;
-    font-size: 0.95rem;
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
   }
-  .card-body p {
+
+  .project-title {
     margin: 0;
-    font-size: 0.8rem;
-    color: var(--muted);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
   }
+
+  /* Micro-animación de la flecha que se mueve en diagonal al hacer hover */
+  .arrow-icon {
+    color: var(--text-muted);
+    transition: transform 0.25s ease, color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .card:hover .arrow-icon {
+    color: var(--primary);
+    transform: translate(3px, -3px);
+  }
+
+  .project-description {
+    margin: 0 0 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    flex-grow: 1;
+  }
+
   .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-top: 0.6rem;
+    margin-top: auto;
   }
+
   .tag {
     font-size: 0.75rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 999px;
-    background: var(--bg);
-    color: var(--muted);
-    border: 1px solid var(--muted);
+    font-weight: 500;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    background: var(--badge-bg);
+    color: var(--text);
+    border: 1px solid var(--badge-border);
+    transition: border-color 0.2s ease;
+  }
+
+  .card:hover .tag {
+    border-color: var(--primary);
   }
 </style>

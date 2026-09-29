@@ -1,29 +1,85 @@
 ---
-const skillGroups = [
-  { key: "lang", label: "Lenguajes", labelKey: "group_lang", filterKey: "filter_lang", items: ["Java (POO)", "PHP", "HTML", "XML", "JSON", "PL/SQL", "SQL"] },
-  { key: "frameworks", label: "Frameworks", labelKey: "group_frameworks", filterKey: "filter_frameworks", items: ["Laravel", "Symfony", "Velneo"] },
-  { key: "db", label: "Bases de datos", labelKey: "group_db", filterKey: "filter_db", items: ["MySQL", "MariaDB", "phpMyAdmin"] },
-  { key: "sys", label: "Sistemas y redes", labelKey: "group_sys", filterKey: "filter_sys", items: ["Windows", "Linux", "Samba", "FTP", "DHCP", "VirtualBox", "XAMPP", "Mikrotik", "Isard"] },
-  { key: "tools", label: "Herramientas", labelKey: "group_tools", filterKey: "filter_tools", items: ["Git", "GitHub", "VS Code", "Eclipse", "NetBeans", "Visual Studio 2022", "AWS"] },
+
+interface SkillGroup {
+  key: string;
+  icon: string;
+  label: string;
+  labelKey: string;
+  filterKey: string;
+  items: string[];
+}
+
+const skillGroups: SkillGroup[] = [
+  { 
+    key: "lang", 
+    icon: "💻",
+    label: "Lenguajes", 
+    labelKey: "group_lang", 
+    filterKey: "filter_lang", 
+    items: ["Java (POO)", "PHP", "SQL", "PL/SQL", "HTML5", "CSS3", "JavaScript"] 
+  },
+  { 
+    key: "frameworks", 
+    icon: "⚡",
+    label: "Frameworks & Backend", 
+    labelKey: "group_frameworks", 
+    filterKey: "filter_frameworks", 
+    items: ["Symfony 7", "Laravel", "Velneo", "Node.js", "Express", "Bootstrap"] 
+  },
+  { 
+    key: "db", 
+    icon: "🗄️",
+    label: "Bases de datos", 
+    labelKey: "group_db", 
+    filterKey: "filter_db", 
+    items: ["MySQL", "MariaDB", "PostgreSQL"] 
+  },
+  { 
+    key: "sys", 
+    icon: "🌐",
+    label: "Sistemas y redes", 
+    labelKey: "group_sys", 
+    filterKey: "filter_sys", 
+    items: ["Linux (Ubuntu/Debian)", "Windows Server", "Samba","Docker"] 
+  },
+  { 
+    key: "tools", 
+    icon: "🛠️",
+    label: "Herramientas & Entorno", 
+    labelKey: "group_tools", 
+    filterKey: "filter_tools", 
+    items: ["Git", "GitHub", "VS Code", "Postman", "AWS"] 
+  },
 ];
 ---
-<section id="skills" class="skills">
-  <div class="container">
-    <h2 data-i18n="skillsTitle">Tecnologías</h2>
+<section id="tecnologias" class="skills">
+  <div class="container reveal">
+    <h2 class="section-heading" data-i18n="skillsTitle">Tecnologías</h2>
 
-    <div class="filter-tabs">
-      <button class="filter-btn active" data-filter="all" data-i18n="filterAll">Todas</button>
+    <!-- Pestañas de filtrado interactivo -->
+    <div class="filter-tabs" role="tablist" aria-label="Filtros de tecnologías">
+      <button class="filter-btn active" data-filter="all" data-i18n="filterAll" role="tab" aria-selected="true">
+        Todas
+      </button>
       {skillGroups.map((g) => (
-        <button class="filter-btn" data-filter={g.key} data-i18n={g.filterKey}>{g.label}</button>
+        <button class="filter-btn" data-filter={g.key} data-i18n={g.filterKey} role="tab" aria-selected="false">
+          {g.label}
+        </button>
       ))}
     </div>
 
-    <div class="skills-cards">
+    <!-- Tarjetas de habilidades agrupadas -->
+    <div class="skills-cards" id="skills-grid">
       {skillGroups.map((group) => (
         <div class="skill-card" data-group={group.key}>
-          <p class="group-label" data-i18n={group.labelKey}>{group.label}</p>
-          <div class="skills-grid">
-            {group.items.map((s) => <span class="skill-badge">{s}</span>)}
+          <div class="skill-card-header">
+            <span class="group-icon">{group.icon}</span>
+            <h3 class="group-label" data-i18n={group.labelKey}>{group.label}</h3>
+          </div>
+          <div class="skills-badges">
+            {group.items.map((s) => (
+              <span class="skill-badge">{s}</span>
+            ))}
           </div>
         </div>
       ))}
@@ -32,16 +88,48 @@ const skillGroups = [
 </section>
 
 <script>
+  // ==========================================================================
+  // EXPLICACIÓN TÉCNICA (Filtrado Animado con Transición Fluida):
+  // En lugar de ocultar las tarjetas de golpe (display: none), aplicamos una
+  // animación de dos fases (fading out -> display toggle -> fading in):
+  // 1. Añadimos la clase 'is-hidden-anim' a las que no coinciden para reducir su
+  //    opacidad y escala suavemente mediante CSS transform/opacity.
+  // 2. Las tarjetas visibles se muestran con una transición de escala natural.
+  // Esto genera una sensación de interactividad premium para quien evalúa el portfolio.
+  // ==========================================================================
   const filterBtns = document.querySelectorAll('.filter-btn');
-  const cards = document.querySelectorAll('.skill-card');
+  const cards = document.querySelectorAll<HTMLElement>('.skill-card');
 
   filterBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      filterBtns.forEach((b) => b.classList.remove('active'));
+      // Manejo de clase activa y atributos ARIA de accesibilidad
+      filterBtns.forEach((b) => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
       btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      cards.forEach((c) => {
-        c.style.display = (filter === 'all' || c.dataset.group === filter) ? 'block' : 'none';
+      btn.setAttribute('aria-selected', 'true');
+
+      const filter = btn.getAttribute('data-filter');
+
+      cards.forEach((card) => {
+        const matches = (filter === 'all' || card.getAttribute('data-group') === filter);
+        
+        if (matches) {
+          card.style.display = 'flex';
+          // Pequeño timeout para permitir que el navegador registre el cambio de display antes de animar
+          requestAnimationFrame(() => {
+            card.classList.remove('card-hidden');
+          });
+        } else {
+          card.classList.add('card-hidden');
+          // Una vez finalizada la transición CSS, ocultamos del flujo
+          setTimeout(() => {
+            if (card.classList.contains('card-hidden')) {
+              card.style.display = 'none';
+            }
+          }, 250);
+        }
       });
     });
   });
@@ -49,60 +137,118 @@ const skillGroups = [
 
 <style>
   .skills {
-    padding: 5rem 2rem;
+    padding: 4.5rem 0;
   }
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-  }
+
   .filter-tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1.5rem 0 2rem;
+    gap: 0.6rem;
+    margin: 1.5rem 0 2.25rem;
   }
+
   .filter-btn {
-    background: none;
-    border: 1px solid var(--muted);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
     border-radius: 999px;
-    padding: 0.4rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.45rem 1.15rem;
+    font-size: 0.875rem;
+    font-weight: 500;
     cursor: pointer;
-    color: var(--text);
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
   }
+
+  .filter-btn:hover {
+    color: var(--text);
+    border-color: var(--muted);
+    transform: translateY(-1px);
+  }
+
   .filter-btn.active {
     background: var(--text);
     color: var(--bg);
     border-color: var(--text);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
+
   .skills-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.2rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.35rem;
   }
+
   .skill-card {
     background: var(--card-bg);
+    border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 1.2rem;
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.25s ease, opacity 0.25s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    opacity: 1;
+    transform: scale(1);
   }
+
+  .skill-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  /* Estado durante la transición de filtrado */
+  .skill-card.card-hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+
+  .skill-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .group-icon {
+    font-size: 1.25rem;
+  }
+
   .group-label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    margin: 0 0 0.8rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    letter-spacing: -0.01em;
   }
-  .skills-grid {
+
+  .skills-badges {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
+
   .skill-badge {
     background: var(--bg);
-    border: 1px solid var(--muted);
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-    font-size: 0.8rem;
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.825rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: all 0.2s ease;
+  }
+
+  /* Micro-interacción al pasar el ratón sobre cada tecnología */
+  .skill-badge:hover {
+    background: var(--card-bg);
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   }
 </style>

@@ -1,0 +1,103 @@
+---
+const cursos = [
+  { nombre: "Curso de Unity", horas: 15, enlace: "https://drive.google.com/file/d/1iAzCuyJ7SwT1kAdb0qpDYReY3Tfnc453/view?usp=sharing" },
+  { nombre: "Curso de Matemáticas para videojuegos con Unity", horas: 10, enlace: "https://drive.google.com/file/d/1t1vf544V20YLU6NaTwC7jYxv0gwx0g8R/view?usp=sharing" },
+  { nombre: "Curso de Shell Linux", horas: 10, enlace: "https://drive.google.com/file/d/11H5281tGhxLfVb4RerWT54XoXEPDnW6m/view?usp=sharing" },
+  { nombre: "Curso de Git", horas: 7, enlace: "https://drive.google.com/file/d/1gzSIyz_tm7OHG5AOy1GJGDy3SVvcRbjw/view?usp=sharing" },
+  { nombre: "SQL desde Cero", horas: 7, enlace: "https://drive.google.com/file/d/1HbZ0dJGXUrdXnhPBWZp3hwUlX7Qb3py9/view?usp=sharing" },
+  { nombre: "Gestión de documentación técnica con GitHub y Markdown", horas: 1, enlace: "https://drive.google.com/file/d/1dGk9BCcGpZfKLdTI65UM9EgKvRCZ6IOL/view?usp=sharing" },
+  { nombre: "Java desde 0: Orientación a Objetos", horas: 14, enlace: "https://drive.google.com/file/d/1FMSzzeUWsp4hddz_P2GcxVZWIPDkq96k/view?usp=sharing" },
+  { nombre: "Java desde 0: Introducción", horas: 13, enlace: "https://drive.google.com/file/d/12ncSpTx34Mdw7L26awl9FLwIuSCbgeC-/view?usp=sharing" },
+];
+---
+<section id="formacion" class="formacion">
+  <div class="container reveal">
+    <h2 class="section-heading" data-i18n="extraTitle">Formación Complementaria</h2>
+
+    <ul class="cursos-list">
+      {cursos.map((c) => (
+        <li class="curso-item">
+          <a href={c.enlace} target="_blank" rel="noopener noreferrer" class="curso-link">
+            <span class="curso-nombre">{c.nombre}</span>
+            <span class="curso-horas">{c.horas} h</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .formacion {
+    padding: 4.5rem 0;
+  }
+
+  .cursos-list {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .curso-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.15rem 1.5rem;
+    box-shadow: var(--card-shadow);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .curso-link:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .curso-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .curso-nombre {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .curso-horas {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    color: var(--text-muted);
+    transition: border-color 0.2s ease;
+  }
+
+  .curso-link:hover .curso-horas {
+    border-color: var(--primary);
+  }
+
+  @media (max-width: 680px) {
+    .cursos-list {
+      grid-template-columns: 1fr;
+    }
+
+    .curso-link {
+      padding: 1.15rem;
+    }
+  }
+</style>

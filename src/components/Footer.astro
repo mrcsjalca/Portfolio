@@ -1,33 +1,165 @@
+---
+const currentYear = new Date().getFullYear();
+---
 <footer id="contacto" class="footer">
-  <h2 data-i18n="contactTitle">Hablemos</h2>
-  <div class="contact-links">
-    <a href="https://www.linkedin.com/in/marcos-jalca-36b32a35b/" target="_blank" rel="noopener noreferrer">
-      LinkedIn ↗
-    </a>
-    <a href="https://github.com/mrcsjalca" target="_blank" rel="noopener noreferrer">
-      GitHub ↗
-    </a>
+  <div class="container reveal">
+    <div class="footer-card">
+      <h2 class="contact-title" data-i18n="contactTitle">Hablemos</h2>
+      <p class="contact-subtitle" data-i18n="contactSubtitle">
+        ¿Tienes una propuesta laboral, proyecto o vacante de formación dual? Escríbeme y charlamos.
+      </p>
+
+      <div class="contact-actions">
+        <!-- Enlace a LinkedIn -->
+        <a 
+          href="https://www.linkedin.com/in/marcos-jalca-36b32a35b/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="contact-btn"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect width="4" height="12" x="2" y="9"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+          <span>LinkedIn</span>
+          <span class="btn-arrow">↗</span>
+        </a>
+
+        <!-- Enlace a GitHub -->
+        <a 
+          href="https://github.com/mrcsjalca" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="contact-btn"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
+            <path d="M9 18c-4.51 2-5-2-7-2"/>
+          </svg>
+          <span>GitHub</span>
+          <span class="btn-arrow">↗</span>
+        </a>
+
+        <!-- Botón Volver Arriba -->
+        <a href="#" class="contact-btn back-to-top" aria-label="Volver arriba">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m18 15-6-6-6 6"/>
+          </svg>
+          <span>Arriba</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Copyright formal y actualizado automáticamente -->
+    <div class="footer-bottom">
+      <p class="tech-stack-note">
+        Construido con <span class="accent-text">Astro</span> & TypeScript
+      </p>
+    </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    padding: 4rem 2rem;
-    text-align: center;
+    padding: 4rem 0 3rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border);
   }
-  .contact-links {
+
+  .footer-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+  }
+
+  .contact-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin: 0 0 0.75rem;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .contact-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 540px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .contact-actions {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin: 1.5rem 0;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
-  .contact-links a {
-    color: inherit;
+
+  .contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
   }
-  .copyright {
-    color: var(--muted);
-    font-size: 0.85rem;
+
+  .contact-btn:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .btn-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .contact-btn:hover .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .footer-bottom {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+
+
+  .accent-text {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  @media (max-width: 600px) {
+    .footer-card {
+      padding: 2rem 1.25rem;
+    }
+    .contact-actions {
+      flex-direction: column;
+    }
+    .contact-btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+    }
   }
 </style>

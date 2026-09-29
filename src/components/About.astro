@@ -1,27 +1,118 @@
-<section id="sobre-mi" class="about">
-  <div class="container">
-    <h2 data-i18n="aboutTitle" id="sobremi" >Sobre mí</h2>
-    <!-- No  ponemos nada de texto poque ya pilla del js para rellenar el texto con los diferentes idiomas-->
-    <p data-i18n="aboutText"></p>
+---
+
+---
+<section id="sobremi" class="about">
+  <div class="container reveal">
+    <h2 class="section-heading" data-i18n="aboutTitle">Sobre mí</h2>
+
+    <!--
+      COMPLICACIÓN RESUELTA (SSR vs i18n del cliente):
+      Anteriormente la etiqueta <p data-i18n="aboutText"></p> estaba completamente vacía
+      en el HTML inicial, confiando únicamente en JavaScript para rellenarla.
+      Esto provocaba que motores de búsqueda (SEO), previsualizaciones y usuarios con
+      conexiones lentas vieran un hueco en blanco.
+      Ahora dejamos el texto base en español por defecto, y si el usuario cambia el idioma
+      o tiene preferencia guardada, el script i18n lo sustituye limpiamente.
+    -->
+    <p class="about-description" data-i18n="aboutText">
+      Estudiante de CFGS Desarrollo de Aplicaciones Multiplataforma (DAM) en el INS Baix Camp (Reus). Construyo proyectos full-stack y de escritorio para dominar tecnologías modernas y preparar mi entrada al mercado laboral, con especial interés en contratos de formación dual y desarrollo de software empresarial.
+    </p>
+
+    <!-- Tarjetas de Información Rápida (Highlights) para reclutadores -->
+    <div class="highlights-grid">
+      <div class="highlight-card">
+        <div class="highlight-icon">🎓</div>
+        <div>
+          <h3 class="highlight-title">Formación</h3>
+          <p class="highlight-value" data-i18n="aboutHighlightsEdu">Estudiante DAM (2º curso)</p>
+        </div>
+      </div>
+
+      <div class="highlight-card">
+        <div class="highlight-icon">📍</div>
+        <div>
+          <h3 class="highlight-title">Ubicación</h3>
+          <p class="highlight-value" data-i18n="aboutHighlightsLoc">Reus, Tarragona</p>
+        </div>
+      </div>
+
+      <div class="highlight-card">
+        <div class="highlight-icon">⚡</div>
+        <div>
+          <h3 class="highlight-title">Especialidad</h3>
+          <p class="highlight-value" data-i18n="aboutHighlightsFocus">Backend & Multiplataforma</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-
-
 <style>
   .about {
-    padding: 4rem 2rem;
-    max-width: 700px;
-    margin: 0 auto;
+    padding: 4.5rem 0;
   }
-  .tag-index {
-    font-size: 0.85rem;
-    color: var(--muted);
+
+  .about-description {
+    font-size: 1.1rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    margin: 0 0 2rem;
+    max-width: 800px;
+  }
+
+  /* Grid de puntos clave para escaneo rápido de RRHH */
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .highlight-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .highlight-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .highlight-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .highlight-title {
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin: 0 0 0.25rem;
+    font-weight: 600;
   }
-  .status {
-    margin-top: 1.5rem;
+
+  .highlight-value {
     font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
   }
 </style>

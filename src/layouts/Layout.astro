@@ -1,5 +1,20 @@
 ---
-const { title } = Astro.props;
+// ============================================================================
+// LAYOUT PRINCIPAL DEL PORTFOLIO
+// ============================================================================
+// Props recibidas por el componente Layout:
+// - title: Título dinámico para la pestaña del navegador y SEO
+// - description: Meta-descripción para motores de búsqueda y redes sociales
+// ============================================================================
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { 
+  title = "Marcos Jalca | Desarrollador Multiplataforma (DAM) & Full-Stack",
+  description = "Portfolio profesional de Marcos Jalca. Desarrollador especializado en Backend, Frontend y Aplicaciones Multiplataforma (DAM). Disponible para formación dual y proyectos de software."
+} = Astro.props;
 ---
 <!doctype html>
 <html lang="es">
@@ -7,40 +22,246 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <script is:inline>
+    <meta name="description" content={description} />
+    <meta name="author" content="Marcos Jalca" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0b0f19" />
 
+    <!-- Open Graph / Meta etiquetas para compartir de forma profesional en LinkedIn/Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="es_ES" />
+
+    <!--
+      SCRIPT CRÍTICO EN LÍNEA: PREVENCIÓN DE FOUC (Flash of Unstyled Content)
+      ¿Por qué se coloca directamente aquí en el <head> con is:inline?
+      Si ejecutáramos este código en un script diferido (deferred/module), la página
+      se pintaría primero en blanco (tema por defecto) y, fracciones de segundo después,
+      cambiaría a negro si el usuario tenía el tema oscuro guardado. Este "destello"
+      es muy molesto y poco profesional.
+      
+      Al estar síncrono en el <head>, se resuelve ANTES del primer renderizado del DOM,
+      asegurando que el usuario vea de inmediato su tema preferido (o el del sistema).
+    -->
+    <script is:inline>
+      (function () {
+        try {
+          const savedTheme = localStorage.getItem('theme');
+          if (savedTheme) {
+            document.documentElement.dataset.theme = savedTheme;
+          } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.dataset.theme = 'dark';
+          } else {
+            document.documentElement.dataset.theme = 'light';
+          }
+        } catch (e) {
+          // Si localStorage está restringido en el navegador del usuario, no rompemos la carga
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
     </script>
   </head>
+
   <body>
+    <!-- El contenido de la página se inyecta en este <slot /> -->
     <slot />
+
+    <!--
+      SCRIPT DE ANIMACIÓN SCROLL REVEAL (IntersectionObserver)
+      
+      ¿Por qué IntersectionObserver en lugar del evento 'scroll'?
+      - Escuchar el evento 'window.onscroll' ejecuta código en cada milisegundo de scroll,
+        lo que puede provocar tirones (jank) y un consumo elevado de batería.
+      - IntersectionObserver delega la detección al motor interno del navegador,
+        avisando únicamente cuando el elemento cruza el umbral del viewport (threshold).
+      - Además, llamamos a 'observer.unobserve(entry.target)' una vez visible: esto
+        desconecta el observador para ese elemento y libera memoria, ya que la animación
+        de entrada solo necesita ocurrir una vez.
+      - Respetamos 'prefers-reduced-motion' por accesibilidad (usuarios con sensibilidad
+        a movimientos o mareos vestibulares).
+    -->
+    <script>
+      function initScrollReveal() {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const revealElements = document.querySelectorAll('.reveal');
+
+        if (prefersReducedMotion) {
+          // Si el usuario prefiere reducir movimiento, mostramos todo sin animaciones bruscas
+          revealElements.forEach((el) => el.classList.add('visible'));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                // Liberamos recursos dejando de observar este elemento ya animado
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { 
+            threshold: 0.12, 
+            rootMargin: '0px 0px -40px 0px' 
+          }
+        );
+
+        revealElements.forEach((el) => observer.observe(el));
+      }
+
+      // Se ejecuta al cargar el DOM
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initScrollReveal);
+      } else {
+        initScrollReveal();
+      }
+    </script>
   </body>
 </html>
 
 <style is:global>
+  /*
+     SISTEMA DE VARIABLES DE DISEÑO (CSS Custom Properties)
+     
+     Permite alternar entre modo claro y oscuro de manera instantánea
+     modificando el atributo data-theme en <html>.
+  */
   :root {
-    --bg: #eaeaea;
-    --text: #111111;
+    --bg: #f8fafc;
+    --header-bg: rgba(248, 250, 252, 0.85);
+    --text: #0f172a;
+    --text-muted: #64748b;
     --card-bg: #ffffff;
-    --muted: #555555;
+    --card-border: #e2e8f0;
+    --border: #e2e8f0;
+    --muted: #64748b;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-contrast: #ffffff;
+    --badge-bg: #f1f5f9;
+    --badge-border: #cbd5e1;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --card-shadow-hover: 0 12px 24px -4px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --accent-glow: rgba(37, 99, 235, 0.15);
   }
+
   [data-theme="dark"] {
-    --bg: #121212;
-    --text: #eaeaea;
-    --card-bg: #1e1e1e;
-    --muted: #aaaaaa;
+    --bg: #0b0f19;
+    --header-bg: rgba(11, 15, 25, 0.85);
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --card-bg: #131c2e;
+    --card-border: #1e293b;
+    --border: #1e293b;
+    --muted: #94a3b8;
+    --primary: #3b82f6;
+    --primary-hover: #60a5fa;
+    --primary-contrast: #ffffff;
+    --badge-bg: #1e293b;
+    --badge-border: #334155;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+    --card-shadow-hover: 0 16px 28px -4px rgba(0, 0, 0, 0.5), 0 6px 10px -3px rgba(0, 0, 0, 0.3);
+    --accent-glow: rgba(59, 130, 246, 0.25);
   }
+
+  /*
+     REGLAS GLOBALES Y ACCESIBILIDAD
+     
+  */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /*
+    COMPLICACIÓN RESUELTA (Solapamiento por Header Fijo):
+    Cuando la barra superior tiene 'position: fixed', al pulsar en un enlace de
+    ancla (#proyectos, #contacto), el navegador sitúa el inicio de la sección en la
+    parte superior exacta de la ventana, quedando tapada bajo el header.
+    'scroll-margin-top' añade una distancia de seguridad para que el título
+    quede perfectamente visible con margen.
+  */
+  section, [id] {
+    scroll-margin-top: 85px;
+  }
+
   body {
     margin: 0;
-    font-family: system-ui, sans-serif;
+    padding-top: 70px; /* Altura de la barra de navegación fija */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     background-color: var(--bg);
     color: var(--text);
-    transition: background-color .3s ease, color .3s ease;
-    padding-top: 64px; /* altura real del header, ajusta si hace falta */
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
   }
-    
-    .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* 
+     ANIMACIONES GLOBALES DE SCROLL REVEAL (Aparición fluida)
+     
+     Colocadas de forma global para que funcionen en cualquier elemento de la página.
+     El uso de cubic-bezier(0.16, 1, 0.3, 1) crea un frenado elegante estilo 'spring'.
+  */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Retardos escalonados para que los elementos aparezcan en cascada */
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* Títulos de sección consistentes y profesionales */
+  .section-heading {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    position: relative;
+  }
+
+  .section-heading::after {
+    content: '';
+    display: inline-block;
+    width: 2.5rem;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
 </style>

@@ -1,13 +1,265 @@
 ---
+
 ---
-<section class="hero">
-  <h1 data-i18n="heroTitle">Marcos Jalca</h1>
-  <p data-i18n="heroSubtitle">Estudiante de Desarrollo de Aplicaciones Multiplataforma</p>
+<section class="hero reveal">
+  <div class="hero-container">
+    <!-- Badge de disponibilidad laboral interactivo con animación pulse -->
+    <div class="status-badge" role="status" aria-live="polite">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span data-i18n="heroBadge">Disponible para formación dual / prácticas</span>
+    </div>
+
+    <!-- Nombre y Título Profesional -->
+    <h1 class="hero-name">
+      <span data-i18n="heroTitle">Marcos Jalca</span>
+    </h1>
+
+    <p class="hero-subtitle" data-i18n="heroSubtitle">
+      Estudiante de CFGS Desarrollo de Aplicaciones Multiplataforma (DAM) & Desarrollador Full-Stack
+    </p>
+
+    <p class="hero-bio" data-i18n="heroSubSubtitle">
+      Especializado en backend con <strong>Java</strong>, <strong>PHP</strong> (Symfony, Laravel), bases de datos <strong>SQL</strong> y entornos multiplataforma. Enfocado en código limpio, resolución de problemas y aprendizaje continuo.
+    </p>
+
+    <!-- Botones de Acción (Call To Action) -->
+    <div class="hero-actions">
+      <a href="#proyectos" class="btn btn-primary">
+        <span data-i18n="heroCtaProjects">Ver Proyectos</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+          <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
+      </a>
+
+      <a href="#contacto" class="btn btn-secondary">
+        <span data-i18n="heroCtaContact">Contactar</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon">
+          <rect width="20" height="16" x="2" y="4" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+      </a>
+
+      <div class="hero-socials">
+        <!--
+          REGLA DE SEGURIDAD (rel="noopener noreferrer"):
+          Al usar target="_blank", las páginas externas podrían acceder al objeto 'window.opener'
+          de nuestra web y ejecutar ataques de suplantación (reverse tabnabbing).
+          'noopener' evita el acceso a dicho objeto y 'noreferrer' protege la cabecera de referencia HTTP.
+        -->
+        <a href="https://github.com/mrcsjalca" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Perfil de GitHub de Marcos Jalca" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
+            <path d="M9 18c-4.51 2-5-2-7-2"/>
+          </svg>
+        </a>
+
+        <a href="https://www.linkedin.com/in/marcos-jalca-36b32a35b/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Perfil de LinkedIn de Marcos Jalca" title="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect width="4" height="12" x="2" y="9"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
 </section>
 
 <style>
   .hero {
-    padding: 4rem 2rem;
+    padding: 5rem 1.5rem 4rem;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-container {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Badge de disponibilidad con micro-animación 'pulse' */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    margin-bottom: 1.75rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .status-badge:hover {
+    transform: translateY(-2px);
+    border-color: var(--muted);
+  }
+
+  /* Punto verde que palpita para denotar actividad/disponibilidad */
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+  }
+
+  .status-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    animation: statusPulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes statusPulse {
+    0% {
+      transform: scale(0.95);
+      opacity: 0.85;
+    }
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+
+  .hero-name {
+    font-size: clamp(2.5rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 1rem;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    font-weight: 500;
+    color: var(--primary);
+    margin: 0 0 1.25rem;
+    line-height: 1.4;
+  }
+
+  .hero-bio {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 620px;
+    line-height: 1.65;
+    margin: 0 0 2.25rem;
+  }
+
+  .hero-bio strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Botones de acción */
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.35rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-contrast);
+    box-shadow: 0 4px 12px var(--accent-glow);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px var(--accent-glow);
+  }
+
+  .btn-secondary {
+    background-color: var(--card-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--bg);
+    border-color: var(--muted);
+    transform: translateY(-2px);
+  }
+
+  .btn-icon {
+    transition: transform 0.2s ease;
+  }
+
+  .btn:hover .btn-icon {
+    transform: translateY(2px);
+  }
+
+  .hero-socials {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.5rem;
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .social-link:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  @media (max-width: 600px) {
+    .hero {
+      padding: 3.5rem 1rem 2.5rem;
+    }
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+    .hero-socials {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
   }
 </style>
